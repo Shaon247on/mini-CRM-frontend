@@ -2,6 +2,8 @@ import React from 'react'
 import Navbar from './components/ui/navbar'
 import { Route, Routes } from 'react-router-dom'
 import Hero from './features/landing/Hero'
+import RegisterPage from './features/auth/pages/RegisterPage'
+// import RegisterPage from './features/auth/pages/RegisterPage'
 
 function App() {
 
@@ -11,8 +13,8 @@ function App() {
       <Navbar />
       <Routes>
         <Route path="/" element={<Hero />} />
-        {/* <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} /> */}
+        {/* <Route path="/login" element={<LoginPage />} /> */}
+        <Route path="/register" element={<RegisterPage />} />
       </Routes>
     </div>
     </React.Fragment>
