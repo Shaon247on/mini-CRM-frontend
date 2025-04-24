@@ -13,6 +13,8 @@ const buttonVariants = cva(
         category: "bg-white text-black",
         heroLogin:
           "relative inline-flex items-center justify-center px-6 py-2 bg-[#3B82F6] text-white font-semibold rounded-xl overflow-hidden transition-all duration-300 shadow-md hover:scale-105 hover:shadow-xl before:absolute before:inset-0 before:bg-white before:opacity-10 before:blur before:transition-opacity hover:before:opacity-20 dark:bg-[#2563EB] dark:text-white dark:before:bg-black dark:hover:before:opacity-30",
+        authButton:
+          "!bg-primary !text-white !hover:bg-[#2563EB] dark:!bg-gray-800 dark:!text-white dark:!hover:bg-[#37474f] relative inline-flex items-center justify-center px-6 py-2 bg-[#3B82F6] font-semibold rounded-xl overflow-hidden transition-all duration-300 shadow-md hover:scale-105 hover:shadow-xl before:absolute before:inset-0 before:bg-white before:opacity-10 before:blur before:transition-opacity hover:before:opacity-20 dark:bg-[#2563EB] dark:text-white dark:before:bg-black dark:hover:before:opacity-30",
         destructive:
           "bg-destructive text-destructive-foreground hover:bg-destructive/90",
         outline:

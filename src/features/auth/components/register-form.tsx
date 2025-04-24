@@ -2,19 +2,19 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { registerSchema } from "../schema/registerSchema";
+import { register } from "../services/authService";
+import { toast } from "sonner";
 
 export function RegisterForm() {
   const form = useForm<z.infer<typeof registerSchema>>({
@@ -28,11 +28,22 @@ export function RegisterForm() {
 
   console.log(form.formState.errors);
 
-  function onSubmit(values: z.infer<typeof registerSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
+  const onSubmit = async (values: z.infer<typeof registerSchema>) => {
     console.log(values);
-  }
+    try {
+      const result = await register(values);
+
+      if (result) {
+        console.log(result);
+        toast.success("Registration successful!");
+      } else {
+        console.log(result)
+        toast.error("Registration failed!");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <Form {...form}>
@@ -89,7 +100,7 @@ export function RegisterForm() {
               )}
             />
           </div>
-          <Button type="submit" className="w-full">
+          <Button type="submit" variant="authButton">
             Login
           </Button>
           <div className="relative text-center text-sm after:absolute after:inset-0 after:top-1/4 after:z-0 after:flex after:items-center after:border-t after:border-border">
