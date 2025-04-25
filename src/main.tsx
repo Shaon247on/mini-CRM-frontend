@@ -5,13 +5,21 @@ import { setInitialTheme } from "./lib/theme";
 import "./index.css";
 import App from "./App.tsx";
 import { BrowserRouter } from "react-router-dom";
+import { AuthProvider } from "./provider/AuthContext.tsx";
+import { Toaster } from "sonner";
+import { DashboardProvider } from "./provider/DashboardContext.tsx";
 
 setInitialTheme();
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
+    <AuthProvider>
+      <DashboardProvider>
+        <BrowserRouter>
+          <App />
+          <Toaster />
+        </BrowserRouter>
+      </DashboardProvider>
+    </AuthProvider>
   </StrictMode>
 );

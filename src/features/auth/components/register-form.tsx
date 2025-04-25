@@ -9,119 +9,137 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { registerSchema } from "../schema/registerSchema";
-import { register } from "../services/authService";
 import { toast } from "sonner";
+import { useAuthService } from "../services/authService";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+
+export type RegistrationFormData = z.infer<typeof registerSchema>;
+
+const formFields: {
+  name: keyof RegistrationFormData;
+  label: string;
+  placeholder: string;
+  type?: string;
+}[] = [
+  { name: "username", label: "Username", placeholder: "enter your username" },
+  { name: "email", label: "Email", placeholder: "enter your email" },
+  {
+    name: "password",
+    label: "Password",
+    placeholder: "enter your password",
+    type: "password",
+  },
+];
 
 export function RegisterForm() {
-  const form = useForm<z.infer<typeof registerSchema>>({
+  const router = useNavigate()
+  const { register } = useAuthService();
+
+  const form = useForm<RegistrationFormData>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
       username: "",
       email: "",
       password: "",
+      photo: "",
+      role: "freelancer",
     },
   });
 
-  console.log(form.formState.errors);
+  const onSubmit = async (values: RegistrationFormData) => {
 
-  const onSubmit = async (values: z.infer<typeof registerSchema>) => {
-    console.log(values);
+    console.log("Submitted data:",values)
+
     try {
       const result = await register(values);
-
       if (result) {
-        console.log(result);
         toast.success("Registration successful!");
+        // router("./")
       } else {
-        console.log(result)
         toast.error("Registration failed!");
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="">
-        <div className="flex flex-col items-center gap-2 text-center">
+      <form onSubmit={form.handleSubmit(onSubmit)}>
+        <div className="flex flex-col items-center gap-2 text-center mb-6">
           <h1 className="text-2xl font-bold">Register an account</h1>
           <p className="text-balance text-sm text-muted-foreground">
             Enter your information below to register an account.
           </p>
         </div>
-        <div className="grid gap-6">
+
+        <div className="grid gap-4 mb-6">
+          {formFields.map(({ name, label, placeholder, type }) => (
+            <div className="grid gap-2" key={name}>
+              <FormField
+                control={form.control}
+                name={name}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>{label}</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        placeholder={placeholder}
+                        type={type || "text"}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+          ))}
+
+          {/* Optional: Role ToggleGroup (you can add more fields this way too) */}
           <div className="grid gap-2">
-            <FormField
-              control={form.control}
-              name="username"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Username</FormLabel>
-                  <FormControl>
-                    <Input placeholder="enter your username" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            <FormItem>
+              <FormLabel>Join As</FormLabel>
+              <ToggleGroup
+                type="single"
+                defaultValue="freelancer"
+                onValueChange={(value) => {
+                  if (value) {
+                    form.setValue("role", value as "freelancer" | "client");
+                  }
+                }}
+                className="flex gap-2"
+              >
+                <ToggleGroupItem
+                  value="freelancer"
+                  className="data-[state=on]:bg-[#37474f] data-[state=on]:text-white px-5"
+                >
+                  Freelancer
+                </ToggleGroupItem>
+                <ToggleGroupItem
+                  value="client"
+                  className="data-[state=on]:bg-[#37474f] data-[state=on]:text-white px-5"
+                >
+                  Client
+                </ToggleGroupItem>
+              </ToggleGroup>
+              <FormMessage>{form.formState.errors.role?.message}</FormMessage>
+            </FormItem>
           </div>
-          <div className="grid gap-2">
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Email</FormLabel>
-                  <FormControl>
-                    <Input placeholder="enter your email" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-          <div className="grid gap-2">
-            <FormField
-              control={form.control}
-              name="password"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Password"</FormLabel>
-                  <FormControl>
-                    <Input placeholder="enter your password" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
+
           <Button type="submit" variant="authButton">
-            Login
+            Register
           </Button>
-          <div className="relative text-center text-sm after:absolute after:inset-0 after:top-1/4 after:z-0 after:flex after:items-center after:border-t after:border-border">
-            <span className="relative z-10 bg-background px-2 text-muted-foreground">
-              Or continue with
-            </span>
-          </div>
-          {/* <Button variant="outline" className="w-full">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-            <path
-              d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"
-              fill="currentColor"
-            />
-          </svg>
-          Login with GitHub
-        </Button> */}
         </div>
+
         <div className="text-center text-sm">
-          Don&apos;t have an account?{" "}
-          <Link to={"/register"} className="underline underline-offset-4">
-            Sign up
+          Already have an account?{" "}
+          <Link to="/login" className="underline underline-offset-4">
+            Login
           </Link>
         </div>
       </form>

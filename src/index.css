@@ -1,3 +1,4 @@
+@import "tw-animate-css";
 @import "tailwindcss";
 @import "tailwindcss/utilities";
 @import "tw-animate-css";
@@ -19,7 +20,8 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   --radius: 0.625rem;
-  --background: oklch(1 0 0);
+  --background: oklch(0.98 0.0095 273.36);
+  --black: oklch(0.23 0.0019 286.25);
   --foreground: oklch(0.13 0.028 261.692);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.13 0.028 261.692);
@@ -51,15 +53,13 @@
   --chart-5: oklch(0.769 0.188 70.08);
   --sidebar: oklch(0.985 0.002 247.839);
   --sidebar-foreground: oklch(0.13 0.028 261.692);
-  --sidebar-primary: oklch(0.21 0.034 264.665);
+  --sidebar-primary: oklch(0.71 0.1873 37.8);
   --sidebar-primary-foreground: oklch(0.985 0.002 247.839);
   --sidebar-accent: oklch(0.967 0.003 264.542);
   --sidebar-accent-foreground: oklch(0.21 0.034 264.665);
   --sidebar-border: oklch(0.928 0.006 264.531);
   --sidebar-ring: oklch(0.707 0.022 261.325);
 }
-
-
 
 .header_link {
   position: relative;
@@ -91,9 +91,9 @@
   /* a:hover {
     color: #747bff;
   } */
-  button {
+  /* button {
     background-color: #f9f9f9;
-  }
+  } */
 }
 
 @theme inline {
@@ -106,6 +106,7 @@
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
   --color-background: var(--background);
+  --color-darkBackground: var(--black);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
   --color-card-foreground: var(--card-foreground);
@@ -139,6 +140,7 @@
 }
 
 .dark {
+  --bg-backgroundDark: var(--backgroundDark);
   --background: oklch(0.13 0.028 261.692);
   --foreground: oklch(0.985 0.002 247.839);
   --card: oklch(0.21 0.034 264.665);
