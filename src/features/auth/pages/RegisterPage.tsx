@@ -10,6 +10,7 @@ export default function RegisterPage() {
         </div>
         <div className="flex items-center justify-center">
           <div className="w-full max-w-xs">
+            <h1>Test</h1>
             <RegisterForm />
           </div>
         </div>
