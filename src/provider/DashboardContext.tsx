@@ -32,7 +32,7 @@ export const DashboardProvider = ({ children }: { children: ReactNode }) => {
   const [remindersDueSoon, setRemindersDueSoon] = useState<number>(0);
   const [projectsByStatus, setProjectsByStatus] = useState<Record<string, number>>({});
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [isSideBar, setIsSideBar] = useState<boolean>(true);
+  const [isSideBar, setIsSideBar] = useState<boolean>(false);
   const [navHeader, setNavHeader] = useState<string>("Home");
 
 // All stored states end---------------
