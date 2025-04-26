@@ -35,22 +35,22 @@ export const columns: ColumnDef<ClientType>[] = [
     accessorKey: "actions",
     header: "Actions",
     cell: ({ row }) => {
-    //   const customer = row.original;
+      const customer = row.original;
 
-      //   const handleDelete = async () => {
-      //     if (!window.confirm("Are you sure you want to delete this customer?"))
-      //       return;
-      //     try {
-      //       const isDeleted = await deleteCustomer(customer.id);
-      //       if (isDeleted) {
-      //         toast.success("Reservation Deleted successfully!");
-      //       } else {
-      //         toast.error("Reservation Delete Failed!");
-      //       }
-      //     } catch (error) {
-      //       toast.error("An error occurred while deleting the reservation.");
-      //     }
-      //   };
+        const handleDelete = async () => {
+          if (!window.confirm("Are you sure you want to delete this customer?"))
+            return;
+          try {
+            const isDeleted = await deleteCustomer(customer.id);
+            if (isDeleted) {
+              toast.success("Reservation Deleted successfully!");
+            } else {
+              toast.error("Reservation Delete Failed!");
+            }
+          } catch (error) {
+            toast.error("An error occurred while deleting the reservation.");
+          }
+        };
 
       return (
         <>

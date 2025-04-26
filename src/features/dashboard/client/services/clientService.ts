@@ -1,24 +1,26 @@
-// import { useAuth } from "@/provider/AuthContext";
-// import axios from "axios";
+import axios from "axios";
+import { ClientType } from "../components/columns";
+import { useAuth } from "@/provider/AuthContext";
+import { useDashboard } from "@/provider/DashboardContext";
 
-// const apiUrl = `${import.meta.env.VITE_API_BASE_URL}/api/users`;
+const apiUrl = `${import.meta.env.VITE_API_BASE_URL}/api/users`;
 
-// export type UserRole = 'freelancer' | 'client';
+export const useClientServices = async () => {
+  const { token } = useAuth();
+  const { clientId } = useDashboard();
 
-// export const useAuthService = () => {
-//   const { login: setAuthData, logout } = useAuth();
+  const SaveClient = async (data: ClientType) => {
+    if (clientId === 0) {
+        const response = await axios.post(`${apiUrl}/clients`, data, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          withCredentials: true, // Optional: Only if you are using cookies / sessions
+        });
+        return response.data;
+    }
+  };
 
-//   const addClient = async (data: { username: string; email: string; password: string, photo?: string | undefined, role: UserRole; }) => {
-//     const response = await axios.post(`${apiUrl}/register`, data);
-//     return response.data;
-//   };
-
-//   const login = async (data: { email: string; password: string }) => {
-//     const response = await axios.post(`${apiUrl}/login`, data);
-//     const { token, user } = response.data;
-//     setAuthData(token, user);
-//     return response.data;
-//   };
-
-//   return { register, login, logout };
-// };
+  return { CreateClient };
+};

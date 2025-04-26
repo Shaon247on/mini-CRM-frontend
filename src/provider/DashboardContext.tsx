@@ -8,6 +8,8 @@ interface DashboardState {
   isLoading: boolean;
   navHeader: string;
   isSideBar: boolean;
+  clientId: number;
+  clientPopUp: boolean;
 }
 
 interface DashboardContextType extends DashboardState {
@@ -18,6 +20,8 @@ interface DashboardContextType extends DashboardState {
   setIsLoading: (loading: boolean) => void;
   setNavHeader: (navHeader: string) => void;
   setIsSideBar: (isSideBar: boolean) => void;
+  setClientId: (clientId: number) => void;
+  setClientPopUp: (isSideBar: boolean) => void;
 }
 
 const DashboardContext = createContext<DashboardContextType | undefined>(
@@ -34,6 +38,8 @@ export const DashboardProvider = ({ children }: { children: ReactNode }) => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isSideBar, setIsSideBar] = useState<boolean>(false);
   const [navHeader, setNavHeader] = useState<string>("Home");
+  const [clientId, setClientId] = useState<number>(0);
+  const [clientPopUp, setClientPopUp] = useState<boolean>(false);
 
 // All stored states end---------------
 
@@ -48,13 +54,17 @@ export const DashboardProvider = ({ children }: { children: ReactNode }) => {
     isLoading,
     navHeader,
     isSideBar,
+    clientId, 
+    clientPopUp, 
     setTotalClients,
     setTotalProjects,
     setRemindersDueSoon,
     setProjectsByStatus,
     setIsLoading,
     setNavHeader,
-    setIsSideBar
+    setIsSideBar,
+    setClientId,
+    setClientPopUp
   };
 
   return (

@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const clientSchema = z.object({
+export const ClientSchema = z.object({
   id: z.number().optional(), // ✅ Optional ID for update cases
   name: z.string().min(1, { message: "Client name is required" }),
   email: z.string().email({ message: "Invalid email address" }),

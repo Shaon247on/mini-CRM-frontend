@@ -19,21 +19,21 @@ export default function LandingNavigation() {
         <NavLink
           onClick={() => setNavHeader("About")}
           to="/about"
-          className="header_NavLink text-[#b0bec5] font-medium"
+          className="header_link text-[#b0bec5] font-medium"
         >
           About
         </NavLink>
         <NavLink
           onClick={() => setNavHeader("FAQ")}
           to="/faq"
-          className="header_NavLink text-[#b0bec5] font-medium"
+          className="header_link text-[#b0bec5] font-medium"
         >
           FAQ
         </NavLink>
         <NavLink
           onClick={() => setNavHeader("Contact")}
           to="/contact"
-          className="header_NavLink text-[#b0bec5] font-medium"
+          className="header_link text-[#b0bec5] font-medium"
         >
           Contact
         </NavLink>
