@@ -11,9 +11,14 @@ import { Toaster } from "@/components/ui/sonner";
 import { ColumnDef } from "@tanstack/react-table";
 import { MoreHorizontal, Pencil, Trash } from "lucide-react";
 import { z } from "zod";
-import { clientSchema } from "./clientSchema";
+import { ClientSchema } from "./clientSchema";
+import Swal from 'sweetalert2'
+import { toast } from "sonner";
+import { useDashboard } from "@/provider/DashboardContext";
+import { useClientServices } from "../services/clientService";
+import { useAuth } from "@/provider/AuthContext";
 
-export type ClientType = z.infer<typeof clientSchema>;
+export type ClientType = z.infer<typeof ClientSchema>;
 
 export const columns: ColumnDef<ClientType>[] = [
   {
@@ -35,21 +40,38 @@ export const columns: ColumnDef<ClientType>[] = [
     accessorKey: "actions",
     header: "Actions",
     cell: ({ row }) => {
-      const customer = row.original;
+      const client: ClientType = row.original;
+      const {user} = useAuth()
+      const {setClientId} = useDashboard()
+      const {DeleteClient} = useClientServices()
 
         const handleDelete = async () => {
-          if (!window.confirm("Are you sure you want to delete this customer?"))
-            return;
-          try {
-            const isDeleted = await deleteCustomer(customer.id);
-            if (isDeleted) {
-              toast.success("Reservation Deleted successfully!");
-            } else {
-              toast.error("Reservation Delete Failed!");
+          Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+          }).then(async (result) => {
+            if (result.isConfirmed) {
+              const response = await DeleteClient(client?.id, user?.id)
+              if(response){
+                Swal.fire({
+                  title: "Deleted!",
+                  text: "Client has been deleted.",
+                  icon: "success"
+                });
+              }else{
+                Swal.fire({
+                  title: "Deleted Failed!",
+                  text: "Client deletation has been Failed.",
+                  icon: "error"
+                });
+              }
             }
-          } catch (error) {
-            toast.error("An error occurred while deleting the reservation.");
-          }
+          });
         };
 
       return (
@@ -64,11 +86,11 @@ export const columns: ColumnDef<ClientType>[] = [
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>Actions</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={() => {}}>
+              <DropdownMenuItem onClick={() => setClientId(client?.id)}>
                 <Pencil size={18} className="mr-2" /> Edit
               </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Trash size={18} className="mr-2" /> Delete
+              <DropdownMenuItem onClick={handleDelete}>
+                <Trash size={18}  className="mr-2" /> Delete
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

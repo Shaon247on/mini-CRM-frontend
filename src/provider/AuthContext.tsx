@@ -2,7 +2,7 @@ import { UserRole } from "@/features/auth/services/authService";
 import { createContext, useContext, useEffect, useState } from "react";
 
 interface User {
-  id: string;
+  id: number;
   username: string;
   email: string;
   role: UserRole;

@@ -1,54 +1,58 @@
+import { useQuery } from "@tanstack/react-query";
 import { useDashboard } from "@/provider/DashboardContext";
 import { DataTable } from "./components/data-table";
 import { ClientType, columns } from "./components/columns";
-import { Suspense } from "react";
+import { Suspense, useEffect, useState } from "react";
 import LoadingSpinner from "@/components/LoadingSpinner";
+import { useClientServices } from "./services/clientService";
+import { useAuth } from "@/provider/AuthContext";
 
-export const mockClients: ClientType[] = [
-  {
-    name: "Alice Johnson",
-    email: "alice.johnson@example.com",
-    phone: "01712345678",
-    company: "Creative Co.",
-    notes: "Interested in a long-term partnership.",
-    creatorId: 1234,
-  },
-  {
-    name: "Michael Smith",
-    email: "michael.smith@example.com",
-    phone: "01898765432",
-    company: "Smith & Sons",
-    notes: "Needs follow-up after Q2.",
-    creatorId: 1234,
-  },
-  {
-    name: "Sarah Lee",
-    email: "sarah.lee@example.com",
-    phone: "01987654321",
-    company: "TechWave Ltd.",
-    notes: "",
-    creatorId: 1234,
-  },
-  {
-    name: "David Kim",
-    email: "david.kim@example.com",
-    phone: "01611223344",
-    company: "Edge Innovations",
-    notes: "Requested a quote for mobile app redesign.",
-    creatorId: 1234,
-  },
-  {
-    name: "Emma Watson",
-    email: "emma.watson@example.com",
-    phone: "01599887766",
-    company: "Watson Ventures",
-    notes: "Prefers email communication.",
-    creatorId: 1234,
-  },
-];
+
 
 export default function Client() {
   const { isSideBar } = useDashboard();
+  const { GetClient } = useClientServices(); // Using the service
+  const {user} = useAuth()
+const [data, setData] = useState<ClientType[]>([])
+
+  useEffect(()=>{
+    const getAllClients = async()=>{
+      try {
+        const response = await GetClient(user?.id)
+      if(response){
+        setData(response)
+      }
+      } catch (error) {
+       console.log(error) 
+      }
+    }
+    getAllClients()
+  },[user])
+
+
+  console.log("getting all clients:",data)
+
+  // if(user === null) return null
+
+  // // Using React Query to fetch the data
+  // const { data: response = { data: [], status: "", message: "" }, isPending, error } = useQuery({
+  //   queryKey:['clients'],
+  //   queryFn: async()=>{
+  //     const response = await GetClient(user?.id)
+  //     return response.data
+  //   }
+  // });
+
+  // console.log("Getting data:",response)
+
+  // if (isPending) {
+  //   return <LoadingSpinner />;
+  // }
+
+  // if (error) {
+  //   return <div className="text-red-500">Failed to load clients. The error is {error.message}</div>;
+  // }
+
 
   return (
     <div className="flex justify-end">
@@ -59,7 +63,7 @@ export default function Client() {
       >
         <Suspense fallback={<LoadingSpinner />}>
             <div className="m-5">
-              <DataTable<ClientType, unknown> data={mockClients} columns={columns} />
+              <DataTable<ClientType, unknown> data={data} columns={columns} />
             </div>        
         </Suspense>
       </h1>
