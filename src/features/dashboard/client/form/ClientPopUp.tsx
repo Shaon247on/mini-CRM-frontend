@@ -15,18 +15,19 @@ export default function ClientPopUp() {
   const { GetClientById } = useClientServices();
 
   useEffect(() => {
-    if (clientId !== 0) {
-      const getTheClient = async () => {
-        const response = await GetClientById(clientId, user?.id);
-        form.setValue("id", response.id);
-        form.setValue("name", response.name);
-        form.setValue("company", response.company);
-        form.setValue("creatorId", response.creatorId);
-        form.setValue("notes", response.notes);
-        form.setValue("phone", response.phone);
-        form.setValue("email", response.email);
-      };
-    }
+    if (clientId === 0) return;
+    const getTheClient = async () => {
+      const response = await GetClientById(clientId, user?.id);
+      form.setValue("id", response.id);
+      form.setValue("name", response.name);
+      form.setValue("company", response.company);
+      form.setValue("creatorId", response.creatorId);
+      form.setValue("notes", response.notes);
+      form.setValue("phone", response.phone);
+      form.setValue("email", response.email);
+    };
+
+    getTheClient();
   }, []);
 
   const form = useForm<z.infer<typeof ClientSchema>>({
@@ -51,10 +52,7 @@ export default function ClientPopUp() {
       <DialogContent>
         <DialogTitle>
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)}>
-              
-              
-            </form>
+            <form onSubmit={form.handleSubmit(onSubmit)}></form>
           </Form>
         </DialogTitle>
       </DialogContent>
