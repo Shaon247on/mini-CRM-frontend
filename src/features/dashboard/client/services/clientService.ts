@@ -5,11 +5,10 @@ import { useDashboard } from "@/provider/DashboardContext";
 
 const apiUrl = `${import.meta.env.VITE_API_BASE_URL}/api/clients`;
 
-export const useClientServices = () => {
+ export const useClientServices = () => {
   const { token } = useAuth();
   const { clientId } = useDashboard();
 
-  if(token === null) return
   const headers = {
     Authorization: `Bearer ${token}`,
     "Content-Type": "application/json",
@@ -49,14 +48,14 @@ export const useClientServices = () => {
     return response.data;
   };
 
-  const GetClientById = async (id: number, creatorId: number) => {
+  const GetClientById = async (id: number | undefined, creatorId: number | undefined) => {
     if (!id || !creatorId) throw new Error("Both ID and Client ID are required.");
 
     const response = await axios.get(`${apiUrl}/${id}`, {
       headers,
       params: { creatorId },
     });
-    return response.data;
+    return response.data as ClientType;
   };
 
   return { SaveClient, DeleteClient, GetClient, GetClientById };

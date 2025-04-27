@@ -58,7 +58,7 @@ export function RegisterForm() {
       const result = await register(values);
       if (result) {
         toast.success("Registration successful!");
-        // router("./")
+        router("./login")
       } else {
         toast.error("Registration failed!");
       }

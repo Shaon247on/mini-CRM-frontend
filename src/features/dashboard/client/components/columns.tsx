@@ -13,7 +13,6 @@ import { MoreHorizontal, Pencil, Trash } from "lucide-react";
 import { z } from "zod";
 import { ClientSchema } from "./clientSchema";
 import Swal from 'sweetalert2'
-import { toast } from "sonner";
 import { useDashboard } from "@/provider/DashboardContext";
 import { useClientServices } from "../services/clientService";
 import { useAuth } from "@/provider/AuthContext";

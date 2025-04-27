@@ -23,6 +23,7 @@ import { Input } from "@/components/ui/input";
 import React from "react";
 import { cn } from "@/lib/utils";
 import { Plus, ArrowUpDown } from "lucide-react";
+import { useDashboard } from "@/provider/DashboardContext";
 
 
 
@@ -40,6 +41,8 @@ export function DataTable<TData, TValue>({
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   );
+
+  const {setClientPopUp} = useDashboard()
 
   const table = useReactTable({
     data,
@@ -68,7 +71,7 @@ export function DataTable<TData, TValue>({
           }
           className="max-w-xs"
         />
-        <Button size={"sm"} className={buttonVariants()}>
+        <Button size={"sm"} onClick={()=> setClientPopUp(true)} className={buttonVariants()}>
           <Plus size={16} /> New Client
         </Button>
       </div>

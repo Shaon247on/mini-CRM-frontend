@@ -2,7 +2,7 @@ import { Moon, Sun } from "lucide-react"
 import { useEffect, useState } from "react"
 
 export function ModeToggle() {
-  const [theme, setTheme] = useState(() => {
+  const [theme, setTheme] = useState<string>(() => {
     if (typeof window !== "undefined") {
       return localStorage.theme || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light")
     }
@@ -15,7 +15,7 @@ export function ModeToggle() {
   }, [theme])
 
   const toggleTheme = () => {
-    setTheme(prev => (prev === "dark" ? "light" : "dark"))
+    setTheme(theme => (theme === "dark" ? "light" : "dark"))
   }
 
   return (
